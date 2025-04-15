@@ -26,20 +26,23 @@ var upgrader = websocket.Upgrader{
 }
 
 func (scd *ServerConnData) HandleConnections(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Opening a new connection...")
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Error upgrading connection | Error: %v", err)
 		return
 	}
 	defer conn.Close()
+	fmt.Println("Connection upgraded successfully!")
 
 	scd.Clients[conn] = true
 
+	fmt.Printf("Waiting for messages on connection...\n")
 	for {
 		var msg models.Message
 		err := conn.ReadJSON(&msg)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Error reading message | Error: %v\n", err)
 			delete(scd.Clients, conn)
 			return
 		}
@@ -55,7 +58,7 @@ func (scn *ServerConnData) HandleMessages() {
 		for client := range scn.Clients {
 			err := client.WriteJSON(msg)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Printf("Error writing message to client | err: %v\n", err)
 				client.Close()
 				delete(scn.Clients, client)
 			}

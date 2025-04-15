@@ -19,7 +19,15 @@ func main() {
 	}
 	// Initializing Server Connection Data (for handling clients and messages)
 	scn := web_socket_service.NewServerConnData()
-	http.HandleFunc("/", web.HomePage)
+	http.HandleFunc("/", web.ServeHome)
+
+	// Serve all CSS and JS
+	http.Handle("/css/", http.StripPrefix("/css/",
+		http.FileServer(http.Dir("frontend/css"))))
+
+	http.Handle("/js/", http.StripPrefix("/js/",
+		http.FileServer(http.Dir("frontend/js"))))
+
 	http.HandleFunc("/ws", scn.HandleConnections)
 
 	go scn.HandleMessages()
