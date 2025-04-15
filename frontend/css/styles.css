@@ -1,39 +1,99 @@
-html {
-  overflow: hidden;
+/* Base reset & layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
 }
 
-body {
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  width: 100%;
+/* Login container */
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
-  background: gray;
+  background: linear-gradient(135deg, #e0e0e0, #ffffff);
+}
+
+#login h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+#login input {
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1em;
+  width: 250px;
+  transition: border-color 0.2s;
+}
+
+#login input:focus {
+  outline: none;
+  border-color: #3f51b5;
+}
+
+#login button {
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #3f51b5;
+  color: white;
+  cursor: pointer;
+  width: 250px;
+  transition: background-color 0.3s;
+}
+
+#login button:hover {
+  background-color: #303f9f;
+}
+
+/* Chat container */
+#chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 #log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1em;
   background: white;
-  margin: 0;
-  padding: 0.5em;
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-  right: 0.5em;
-  bottom: 3em;
-  overflow: auto;
+  border-bottom: 1px solid #ddd;
 }
 
 #form {
-  padding: 0 0.5em 0 0.5em;
-  margin: 0;
-  position: absolute;
-  bottom: 1em;
-  left: 0px;
-  width: 100%;
-  overflow: hidden;
+  display: flex;
+  padding: 1em;
+  background: #f1f1f1;
+  border-top: 1px solid #ddd;
+  gap: 0.5em;
 }
 
-#username, #msg {
-  margin-right: 0.5em;
+#form input[type="text"] {
+  flex: 1;
+  padding: 0.5em 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#form input[type="submit"] {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 6px;
+  background: #3f51b5;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#form input[type="submit"]:hover {
+  background: #303f9f;
 }
 

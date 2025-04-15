@@ -1,46 +1,49 @@
+let conn;
+
 window.onload = function () {
-  var conn;
-  var username = document.getElementById("username");
-  var msg = document.getElementById("msg");
-  var log = document.getElementById("log");
+  const loginDiv = document.getElementById("login");
+  const chatDiv = document.getElementById("chat");
+  const loginInput = document.getElementById("login-username");
+  const loginBtn = document.getElementById("login-btn");
+
+  const usernameField = document.getElementById("username");
+  const to = document.getElementById("to");
+  const msg = document.getElementById("msg");
+  const log = document.getElementById("log");
 
   function appendLog(item) {
-    var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+    const doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
     log.appendChild(item);
     if (doScroll) {
       log.scrollTop = log.scrollHeight - log.clientHeight;
     }
   }
 
-  document.getElementById("form").onsubmit = function () {
-    if (!conn || !username.value || !msg.value) {
-      return false;
-    }
+  loginBtn.onclick = function () {
+    const username = loginInput.value.trim();
+    if (!username) return;
 
-    var payload = {
-      username: username.value,
-      message: msg.value
-    };
+    // Show chat UI and hide login
+    loginDiv.style.display = "none";
+    chatDiv.style.display = "block";
+    usernameField.value = username;
 
-    conn.send(JSON.stringify(payload));
-    msg.value = "";
-    return false;
-  };
-
-  if (window["WebSocket"]) {
+    // Open WebSocket
     conn = new WebSocket("ws://" + document.location.host + "/ws");
 
-    conn.onclose = function (evt) {
-      var item = document.createElement("div");
-      item.innerHTML = "<b>Connection closed.</b>";
-      appendLog(item);
+    conn.onopen = function () {
+      const initPayload = {
+        username: username,
+        to: "server",
+        message: "register"
+      };
+      conn.send(JSON.stringify(initPayload));
     };
 
     conn.onmessage = function (evt) {
       try {
         const data = JSON.parse(evt.data);
         const formatted = `${data.username}: ${data.message}`;
-
         const item = document.createElement("div");
         item.innerText = formatted;
         appendLog(item);
@@ -51,10 +54,25 @@ window.onload = function () {
       }
     };
 
-  } else {
-    var item = document.createElement("div");
-    item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
-    appendLog(item);
-  }
+    conn.onclose = function () {
+      const item = document.createElement("div");
+      item.innerHTML = "<b>Connection closed.</b>";
+      appendLog(item);
+    };
+  };
+
+  document.getElementById("form").onsubmit = function () {
+    if (!conn || !msg.value) return false;
+
+    const payload = {
+      username: usernameField.value,
+      to: to.value || "all",
+      message: msg.value
+    };
+
+    conn.send(JSON.stringify(payload));
+    msg.value = "";
+    return false;
+  };
 };
 

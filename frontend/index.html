@@ -7,13 +7,23 @@
 </head>
 
 <body>
-    <div id="log"></div>
-    <form id="form">
-        <input type="text" id="username" placeholder="Username" />
-        <input type="text" id="msg" placeholder="Message" size="64" autofocus />
-        <input type="submit" value="Send" />
-    </form>
+    <!-- Login Screen -->
+    <div id="login">
+        <h2>Enter Username</h2>
+        <input type="text" id="login-username" placeholder="Username" />
+        <button id="login-btn">Join Chat</button>
+    </div>
 
+    <!-- Chat UI -->
+    <div id="chat" style="display: none;">
+        <div id="log"></div>
+        <form id="form">
+            <input type="text" id="username" disabled /> <!-- Already set -->
+            <input type="text" id="to" placeholder="Send to (blank = all)" />
+            <input type="text" id="msg" placeholder="Message" size="64" autofocus />
+            <input type="submit" value="Send" />
+        </form>
+    </div>
     <script src="js/main.js"></script>
 </body>
 

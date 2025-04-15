@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
+	"log"
 	"net/http"
 	"sd-chat/domain/services"
 	"sd-chat/infrastructure/config"
 	"sd-chat/web/controllers"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -32,7 +34,7 @@ func main() {
 
 	go scn.HandleMessages()
 
-	fmt.Printf("Server started on port %s\n", cfg.ServerPort)
+	log.Printf("Server started on port %s\n", cfg.ServerPort)
 	err = http.ListenAndServe(cfg.ServerPort, nil)
 	if err != nil {
 		panic("Error starting server: " + err.Error())
